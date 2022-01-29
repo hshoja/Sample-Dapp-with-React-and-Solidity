@@ -1,10 +1,9 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Greeter from "./artifacts/contracts/Greeter.sol/Greeter.json";
 import { useState } from "react";
 import { ethers } from "ethers";
 
-const greeterAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const greeterAddress = "0x29c3856D738EfeBc0BFC99365a915ec1a2FAf6Dc";
 
 function App() {
   const [greeting, setGreeting] = useState("");

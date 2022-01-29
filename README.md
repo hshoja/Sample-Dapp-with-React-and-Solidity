@@ -13,3 +13,14 @@ npx hardhat node
 node scripts/sample-script.js
 npx hardhat help
 ```
+
+## Ropsten network
+
+- register on infra a new project and allow wallet address
+- Create a new wallet on meta mask and connect it to ropsten network
+- get some facuet from website
+- delopy the contract
+  ```
+  npx hardhat run scripts/deploy.js --network ropsten
+  ```
+- check web and see on etherscan the wallet and contract addresses
