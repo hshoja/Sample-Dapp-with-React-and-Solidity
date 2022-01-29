@@ -32,9 +32,38 @@ function App() {
     }
   }
 
+  async function updateGreeting(newGreeting) {
+    if (!newGreeting) return;
+    if (typeof window.ethereum !== "undefined") {
+      await requestAccount();
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(greeterAddress, Greeter.abi, signer);
+
+      try {
+        const transaction = await contract.setGreeting(newGreeting);
+        console.log(transaction);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  const handleSave = () => {
+    updateGreeting(greeting);
+  };
+
   return (
     <div className="App" style={{ padding: "5rem" }}>
       <button onClick={fetchGreeting}>Fetch Greeting</button>
+      <div>
+        <input
+          onChange={(e) => setGreeting(e.target.value)}
+          value={greeting}
+          type="text"
+        />
+        <button onClick={handleSave}> Update Greeting</button>
+      </div>
     </div>
   );
 }
