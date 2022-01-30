@@ -24,3 +24,11 @@ npx hardhat help
   npx hardhat run scripts/deploy.js --network ropsten
   ```
 - check web and see on etherscan the wallet and contract addresses
+
+# Create a test token on Ropsten
+
+- write solidity and compile it with hardhat
+- add to deploy and deploy to ropsten
+- add functions in UI
+- import token address to your wallet
+- transfer and check in etherscan and wallets
