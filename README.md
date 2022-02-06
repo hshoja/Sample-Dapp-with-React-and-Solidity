@@ -32,3 +32,11 @@ npx hardhat help
 - add functions in UI
 - import token address to your wallet
 - transfer and check in etherscan and wallets
+
+# Create a test token ERC20 on Ropsten
+
+- write solidity and compile it with hardhat
+- add to deploy and deploy to ropsten = 0xF7FCa76C055e95Bc8DE3FD491Db71Cc88323C516
+- add functions in UI
+- import token address to your wallet
+- transfer and check in etherscan and wallets

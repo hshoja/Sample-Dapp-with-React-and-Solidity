@@ -1,16 +1,20 @@
 import "./App.css";
 import Greeter from "./artifacts/contracts/Greeter.sol/Greeter.json";
 import Token from "./artifacts/contracts/Token.sol/Token.json";
+import ERCToken from "./artifacts/contracts/ERCToken.sol/ERCToken.json";
 import { useState } from "react";
 import { ethers } from "ethers";
 
 const greeterAddress = "0x29c3856D738EfeBc0BFC99365a915ec1a2FAf6Dc";
 const tokenAddress = "0x685F3cC9bB5003993fF74714ef52B6f0e10C85ee";
+const ercTokenAddress = "0xF7FCa76C055e95Bc8DE3FD491Db71Cc88323C516";
 
 function App() {
   const [greeting, setGreeting] = useState("");
   const [userAccount, setUserAccount] = useState();
   const [amount, setAmount] = useState();
+  const [amountERC, setAmountERC] = useState();
+  const [userAccountERC, setUserAccountERC] = useState();
 
   //request access to the user's Metamask account
   async function requestAccount() {
@@ -90,6 +94,53 @@ function App() {
     }
   }
 
+  async function getBalanceERC() {
+    if (typeof window.ethereum !== "undefined") {
+      const [account] = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      console.log(account);
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const contract = new ethers.Contract(
+        ercTokenAddress,
+        ERCToken.abi,
+        provider
+      );
+
+      try {
+        const balance = await contract.balanceOf(account);
+        console.log("balance: ", parseInt(balance._hex, 16));
+        console.log(balance);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  async function sendCoinsERC() {
+    if (typeof window.ethereum !== "undefined") {
+      await requestAccount();
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        ercTokenAddress,
+        ERCToken.abi,
+        signer
+      );
+
+      try {
+        const transaction = await contract.transfer(userAccountERC, amountERC);
+        await transaction.wait();
+        console.log(
+          transaction,
+          ` - ${amountERC} Coins successfully sent to ${userAccountERC}`
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
   const handleSave = () => {
     updateGreeting(greeting);
   };
@@ -115,6 +166,19 @@ function App() {
         />
         <input
           onChange={(e) => setAmount(e.target.value)}
+          placeholder="Amount"
+        />
+      </div>
+      <div>
+        <br />
+        <button onClick={getBalanceERC}>Get Balance ERC</button>
+        <button onClick={sendCoinsERC}>Send Coins ERC</button>
+        <input
+          onChange={(e) => setUserAccountERC(e.target.value)}
+          placeholder="Account ID"
+        />
+        <input
+          onChange={(e) => setAmountERC(e.target.value)}
           placeholder="Amount"
         />
       </div>
